@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>副業GAS プロセスマップ - レンタルスペース事業</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', 'Hiragino Sans', sans-serif; background: #0f172a; color: #e2e8f0; padding: 24px; min-height: 100vh; }
+  h1 { text-align: center; font-size: 28px; margin-bottom: 8px; color: #f8fafc; }
+  .subtitle { text-align: center; font-size: 14px; color: #94a3b8; margin-bottom: 32px; }
+
+  /* System Overview */
+  .overview { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto; }
+  .overview-card { background: #1e293b; border-radius: 12px; padding: 20px; border: 1px solid #334155; }
+  .overview-card h2 { font-size: 16px; color: #38bdf8; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .overview-card h2::before { content: ''; display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+  .gas1-card h2::before { background: #22c55e; }
+  .gas2-card h2::before { background: #f59e0b; }
+  .overview-card table { width: 100%; font-size: 13px; }
+  .overview-card td { padding: 4px 0; }
+  .overview-card td:first-child { color: #94a3b8; width: 120px; }
+  .overview-card td:last-child { color: #e2e8f0; }
+
+  /* Section Headers */
+  .section-header { max-width: 1200px; margin: 0 auto 20px; padding: 12px 20px; background: linear-gradient(90deg, #1e293b, transparent); border-left: 4px solid #38bdf8; border-radius: 0 8px 8px 0; }
+  .section-header h2 { font-size: 20px; color: #38bdf8; }
+  .section-header p { font-size: 13px; color: #94a3b8; margin-top: 4px; }
+
+  /* Flow Container */
+  .flow-container { max-width: 1200px; margin: 0 auto 40px; }
+  .flow { background: #1e293b; border-radius: 12px; padding: 24px; margin-bottom: 20px; border: 1px solid #334155; }
+  .flow-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; color: #f8fafc; display: flex; align-items: center; gap: 10px; }
+  .flow-title .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 500; }
+  .badge-trigger { background: #065f46; color: #6ee7b7; }
+  .badge-manual { background: #78350f; color: #fbbf24; }
+  .badge-error { background: #7f1d1d; color: #fca5a5; }
+
+  /* Flow Steps */
+  .flow-steps { display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; }
+  .step { flex: 1; min-width: 140px; max-width: 220px; padding: 14px; border-radius: 10px; font-size: 12px; line-height: 1.6; position: relative; }
+  .step-title { font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+  .step-detail { color: #cbd5e1; font-size: 11px; }
+
+  .step-ext { background: #312e81; border: 1px solid #4338ca; }
+  .step-ext .step-title { color: #a5b4fc; }
+  .step-gas { background: #164e63; border: 1px solid #0891b2; }
+  .step-gas .step-title { color: #67e8f9; }
+  .step-ss { background: #1a2e05; border: 1px solid #4d7c0f; }
+  .step-ss .step-title { color: #a3e635; }
+  .step-drive { background: #422006; border: 1px solid #b45309; }
+  .step-drive .step-title { color: #fbbf24; }
+  .step-alert { background: #450a0a; border: 1px solid #b91c1c; }
+  .step-alert .step-title { color: #fca5a5; }
+
+  .arrow { display: flex; align-items: center; justify-content: center; width: 36px; min-width: 36px; color: #475569; font-size: 20px; flex-shrink: 0; }
+
+  /* Trigger Table */
+  .trigger-section { max-width: 1200px; margin: 0 auto 40px; }
+  .trigger-table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 12px; overflow: hidden; }
+  .trigger-table th { background: #334155; padding: 10px 14px; text-align: left; font-size: 12px; color: #94a3b8; font-weight: 600; }
+  .trigger-table td { padding: 10px 14px; font-size: 13px; border-bottom: 1px solid #1e293b; }
+  .trigger-table tr { background: #1e293b; }
+  .trigger-table tr:nth-child(even) { background: #172033; }
+  .trigger-table .gas-label { padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+  .gas1-label { background: #065f46; color: #6ee7b7; }
+  .gas2-label { background: #78350f; color: #fbbf24; }
+  .error-low { color: #6ee7b7; }
+  .error-mid { color: #fbbf24; }
+  .error-high { color: #f87171; }
+  .no-trigger { color: #64748b; font-style: italic; }
+
+  /* SS Relationship */
+  .ss-diagram { max-width: 1200px; margin: 0 auto 40px; background: #1e293b; border-radius: 12px; padding: 24px; border: 1px solid #334155; }
+  .ss-diagram h2 { font-size: 18px; color: #38bdf8; margin-bottom: 20px; }
+  .ss-grid { display: grid; grid-template-columns: 1fr 80px 1fr; gap: 0; align-items: start; }
+  .ss-box { background: #0f172a; border-radius: 10px; padding: 16px; border: 1px solid #334155; }
+  .ss-box h3 { font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .ss-box h3 .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .ss-box ul { list-style: none; font-size: 12px; }
+  .ss-box li { padding: 3px 0; color: #cbd5e1; }
+  .ss-box li.highlight { color: #fbbf24; font-weight: 600; }
+  .ss-connector { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #475569; font-size: 13px; gap: 4px; padding-top: 60px; }
+  .ss-connector .arrow-lr { font-size: 24px; }
+  .ss-connector .label { font-size: 10px; color: #64748b; text-align: center; }
+
+  /* Legend */
+  .legend { max-width: 1200px; margin: 0 auto 20px; display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #94a3b8; }
+  .legend-color { width: 14px; height: 14px; border-radius: 4px; }
+
+  /* Issues */
+  .issues { max-width: 1200px; margin: 0 auto 40px; background: linear-gradient(135deg, #450a0a, #1e293b); border-radius: 12px; padding: 24px; border: 1px solid #7f1d1d; }
+  .issues h2 { font-size: 18px; color: #fca5a5; margin-bottom: 16px; }
+  .issue-item { padding: 10px 0; border-bottom: 1px solid #334155; font-size: 13px; }
+  .issue-item:last-child { border-bottom: none; }
+  .issue-item .issue-title { font-weight: 700; color: #f87171; margin-bottom: 4px; }
+  .issue-item .issue-desc { color: #cbd5e1; }
+
+  .timestamp { text-align: center; font-size: 11px; color: #475569; margin-top: 20px; }
+
+  /* Block ID badges */
+  .block-id { display: inline-block; font-family: 'Consolas', 'Monaco', monospace; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-right: 8px; letter-spacing: 0.5px; vertical-align: middle; }
+  .id-overview { background: #1e40af; color: #bfdbfe; }
+  .id-flow { background: #7c3aed; color: #ddd6fe; }
+  .id-trigger { background: #0e7490; color: #a5f3fc; }
+  .id-ss { background: #15803d; color: #bbf7d0; }
+  .id-issue { background: #b91c1c; color: #fecaca; }
+</style>
+</head>
+<body>
+
+<h1>副業GAS プロセスマップ</h1>
+<p class="subtitle">レンタルスペース事業 - Gmail予約メール自動取込 &rarr; 売上振分 &rarr; 月別集計 &rarr; 年間合計</p>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-color" style="background:#312e81;border:1px solid #4338ca;"></div>外部データソース</div>
+  <div class="legend-item"><div class="legend-color" style="background:#164e63;border:1px solid #0891b2;"></div>GAS処理</div>
+  <div class="legend-item"><div class="legend-color" style="background:#1a2e05;border:1px solid #4d7c0f;"></div>スプレッドシート出力</div>
+  <div class="legend-item"><div class="legend-color" style="background:#422006;border:1px solid #b45309;"></div>マスタ参照</div>
+  <div class="legend-item"><div class="legend-color" style="background:#450a0a;border:1px solid #b91c1c;"></div>エラー/警告</div>
+</div>
+
+<!-- System Overview Cards -->
+<div class="overview">
+  <div class="overview-card gas1-card" id="OV1">
+    <h2><span class="block-id id-overview">OV1</span>GAS① 井上様売上管理表2026v2</h2>
+    <table>
+      <tr><td>ランタイム</td><td>Rhino（V8未移行）</td></tr>
+      <tr><td>SS ID</td><td style="font-size:11px;">1iCCMv_rr-g1iMlYE_OtvkrApAt0gqVKUa8acaLihPCI</td></tr>
+      <tr><td>トリガー数</td><td>14個（時間ベース）</td></tr>
+      <tr><td>7日間実行数</td><td>2,842回</td></tr>
+      <tr><td>エラー率</td><td>16.47%</td></tr>
+      <tr><td>ユーザー</td><td>2人（自分 + 他のユーザー）</td></tr>
+      <tr><td>役割</td><td>予約取込・売上振分・月別集計・年間合計</td></tr>
+    </table>
+  </div>
+  <div class="overview-card gas2-card" id="OV2">
+    <h2><span class="block-id id-overview">OV2</span>GAS② 予約変更白田2026</h2>
+    <table>
+      <tr><td>ランタイム</td><td>V8</td></tr>
+      <tr><td>SS ID</td><td style="font-size:11px;">1PaVjNkrOA1MPELx3WFlyrHlEdW1hmB41QpKeh3oSdr8</td></tr>
+      <tr><td>トリガー数</td><td>2個（時間ベース）+ 2個未設定</td></tr>
+      <tr><td>7日間実行数</td><td>332回</td></tr>
+      <tr><td>エラー率</td><td>70.48%</td></tr>
+      <tr><td>ユーザー</td><td>1人</td></tr>
+      <tr><td>役割</td><td>予約変更（キャンセル/延長/変更）処理</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ==================== GAS① Flows ==================== -->
+<div class="section-header">
+  <h2>GAS① 井上様売上管理表2026v2</h2>
+  <p>予約メール取込 &rarr; 各スペースへの売上振分 &rarr; 月別集計 &rarr; 年間合計の自動パイプライン</p>
+</div>
+
+<div class="flow-container">
+
+  <!-- Flow 1: インスタベース予約取込 -->
+  <div class="flow">
+    <div class="flow-title">
+      <span class="block-id id-flow">F1</span>インスタベース予約メール取込
+      <span class="badge badge-trigger">トリガー: 時間ベース</span>
+      <span class="badge badge-error">エラー率 46.55%</span>
+    </div>
+    <div class="flow-steps">
+      <div class="step step-ext">
+        <div class="step-title">Gmail</div>
+        <div class="step-detail">件名「【要確認】予約が」<br>+ 日跨ぎ「予約が2件」</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-gas">
+        <div class="step-title">runAllibV2()</div>
+        <div class="step-detail">getReservationInfoIB4()<br>getReservationInfoIBNIKEN()<br>重複チェック（受信時間+予約ID）<br>JST変換</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-gas">
+        <div class="step-title">データ整理</div>
+        <div class="step-detail">removeJapaneseWordsIB3()<br>copyNumbersOnryIB()<br>copyDatesIB1()<br>copynameIB()</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-drive">
+        <div class="step-title">スペースリスト参照</div>
+        <div class="step-detail">generateMValueIB()<br>E列のスペース名&rarr;コード変換<br>M列に出力</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-ss">
+        <div class="step-title">SS① インスタメール</div>
+        <div class="step-detail">A:受信日時<br>B~L:予約情報<br>M:スペースコード<br>N:出力済フラグ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow 2: スペマ予約取込 -->
+  <div class="flow">
+    <div class="flow-title">
+      <span class="block-id id-flow">F2</span>スペースマーケット予約メール取込
+      <span class="badge badge-trigger">トリガー: 時間ベース</span>
+      <span class="badge badge-error">エラー率 40.06%</span>
+    </div>
+    <div class="flow-steps">
+      <div class="step step-ext">
+        <div class="step-title">Gmail</div>
+        <div class="step-detail">to: keteokaspace@gmail.com<br>subject: "今すぐ予約"</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-gas">
+        <div class="step-title">runAllspV2()</div>
+        <div class="step-detail">getInfosp2()<br>重複チェック<br>removeBsame()</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-gas">
+        <div class="step-title">データ整理</div>
+        <div class="step-detail">removeJapaneseWordssp1()<br>removeAddress...sp1()<br>copyNumbersOnrysp()<br>copyDatesSP() / copynamesp()</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-ss">
+        <div class="step-title">SS① スペマメール</div>
+        <div class="step-detail">A:送信日時 B:お名前<br>D:予約ID E:スペース名<br>F:人数 G:利用期間<br>H:オプション I:合計金額</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow 3: カレンダー出力（売上振分） -->
+  <div class="flow">
+    <div class="flow-title">
+      <span class="block-id id-flow">F3</span>各スペースへの売上振分（カレンダー出力）
+      <span class="badge badge-trigger">トリガー: 時間ベース</span>
+      <span class="badge" style="background:#064e3b;color:#6ee7b7;">エラー率 0.15%</span>
+    </div>
+    <div class="flow-steps">
+      <div class="step step-ss">
+        <div class="step-title">インスタメール<br>スペマメール</div>
+        <div class="step-detail">M列のスペース名で出力先決定</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-gas">
+        <div class="step-title">runAlloutputV2()</div>
+        <div class="step-detail">IBoutput1() &mdash; IB分<br>SPoutput1() &mdash; SP分<br>ダミーリスト照合でスキップ</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-ss">
+        <div class="step-title">各スペース個別シート</div>
+        <div class="step-detail">日付マッチ&rarr;金額書込<br>N列に「出力済」マーカー<br>（重複出力防止）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow 4: 月別集計 -->
+  <div class="flow">
+    <div class="flow-title">
+      <span class="block-id id-flow">F4</span>月別売上集計（1~12月）
+      <span class="badge badge-trigger">トリガー: 時間ベース &times; 4</span>
+      <span class="badge" style="background:#064e3b;color:#6ee7b7;">エラー率 0.6~1.2%</span>
+    </div>
+    <div class="flow-steps">
+      <div class="step step-drive">
+        <div class="step-title">スペースリスト</div>
+        <div class="step-detail">タブ名と最終更新時刻を取得<br>古い順にソート</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-gas">
+        <div class="step-title">各スペース売上集計N()</div>
+        <div class="step-detail">N=2,3,4,5（4トリガー）<br>各タブの「合計」行を探す<br>B列(スペマ)+C列(インスタ)合算</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-ss">
+        <div class="step-title">SS① 2026合計</div>
+        <div class="step-detail">対応行に月別合計を書込</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow 5: 年間売上転記 -->
+  <div class="flow">
+    <div class="flow-title">
+      <span class="block-id id-flow">F5</span>全スペース売上転記（変動計算後）
+      <span class="badge badge-trigger">トリガー: 時間ベース &times; 3</span>
+      <span class="badge" style="background:#064e3b;color:#6ee7b7;">エラー率 0.6~2.38%</span>
+    </div>
+    <div class="flow-steps">
+      <div class="step step-ss">
+        <div class="step-title">各スペースシート</div>
+        <div class="step-detail">M列の「合計」行<br>+2行下: 変動計算後<br>+3行下: 最終売上</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-gas">
+        <div class="step-title">全スペース売上転記N()</div>
+        <div class="step-detail">N=3,4,5（3トリガー）<br>2026合計の1行目ヘッダーから<br>タブ名一覧取得（3列ごと）</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-ss">
+        <div class="step-title">SS① 2026合計</div>
+        <div class="step-detail">各スペース列に<br>変動後合計＋最終売上を書込</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow 6: 合計タブ整理 -->
+  <div class="flow">
+    <div class="flow-title">
+      <span class="block-id id-flow">F6</span>合計タブヘッダー自動生成
+      <span class="badge badge-trigger">トリガー: 12時間おき</span>
+      <span class="badge" style="background:#064e3b;color:#6ee7b7;">エラー率 0%</span>
+    </div>
+    <div class="flow-steps">
+      <div class="step step-drive">
+        <div class="step-title">スペースリスト C列</div>
+        <div class="step-detail">全スペース名を取得</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-gas">
+        <div class="step-title">スペースリストから合計タブ更新()</div>
+        <div class="step-detail">各スペースにつき3列セット<br>（スペース名/スペマ/インスタ）</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-ss">
+        <div class="step-title">SS① 2026合計 1行目</div>
+        <div class="step-detail">ヘッダー展開</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow 7: エラーチェック -->
+  <div class="flow">
+    <div class="flow-title">
+      <span class="block-id id-flow">F7</span>データ整合性チェック
+      <span class="badge badge-trigger">トリガー: 時間ベース</span>
+      <span class="badge badge-error">エラー率 100%</span>
+    </div>
+    <div class="flow-steps">
+      <div class="step step-ss">
+        <div class="step-title">スペマメール<br>インスタメール</div>
+        <div class="step-detail">重複データ検出</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-gas">
+        <div class="step-title">runAllChecksV2()</div>
+        <div class="step-detail">ChecksdataV2() &mdash; 重複チェック<br>checkDat7keta() &mdash; 7桁超異常値検出</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-alert">
+        <div class="step-title">SS① エラー通知用</div>
+        <div class="step-detail">チェック結果を出力<br>エラー率100% &mdash; 要調査</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow 8: カシカシ -->
+  <div class="flow">
+    <div class="flow-title">
+      <span class="block-id id-flow">F8</span>main2026カシカシ改
+      <span class="badge badge-trigger">トリガー: 時間ベース &times; 2</span>
+      <span class="badge" style="background:#064e3b;color:#6ee7b7;">エラー率 0%</span>
+    </div>
+    <div class="flow-steps">
+      <div class="step step-gas">
+        <div class="step-title">main2026カシカシ改()</div>
+        <div class="step-detail">2つのトリガーが設定<br>（うち1つは前回実行なし）<br>カシカシ関連の集計処理</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-ss">
+        <div class="step-title">SS① 対象シート</div>
+        <div class="step-detail">集計結果を出力</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== GAS② Flows ==================== -->
+<div class="section-header">
+  <h2>GAS② 予約変更白田2026</h2>
+  <p>予約のキャンセル・延長・変更メールを自動取込し、差額計算を行う + SS②用の予約取込</p>
+</div>
+
+<div class="flow-container">
+
+  <!-- Flow 9: 変動メール取得 -->
+  <div class="flow">
+    <div class="flow-title">
+      <span class="block-id id-flow">F9</span>変動メール取得システム（6種類の変更メール自動取込）
+      <span class="badge badge-manual">トリガー未設定</span>
+    </div>
+    <div class="flow-steps">
+      <div class="step step-ext">
+        <div class="step-title">Gmail (6種類)</div>
+        <div class="step-detail">
+          <strong>SP:</strong> キャンセル / 延長 / 変更<br>
+          <strong>IB:</strong> キャンセル / 延長 / 変更<br>
+          各メールタイプ固有の検索クエリ
+        </div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-gas">
+        <div class="step-title">予約変更V3()</div>
+        <div class="step-detail">emailConfigs &times; 6<br>processEmails()で順次処理<br>メッセージID重複チェック<br>専用パーサーでメール解析</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-ss">
+        <div class="step-title">SS② 6つの変動シート</div>
+        <div class="step-detail">キャンセルSP / 延長SP / 変更SP<br>キャンセルIB / 延長IB / 変更IB</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-drive">
+        <div class="step-title">スペース名更新</div>
+        <div class="step-detail">updateAllSpaceNames()<br>全6シートのスペース名を<br>スペースリストから更新</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow 10: 差額計算 -->
+  <div class="flow">
+    <div class="flow-title">
+      <span class="block-id id-flow">F10</span>予約差額計算
+      <span class="badge badge-manual">トリガー未設定</span>
+    </div>
+    <div class="flow-steps">
+      <div class="step step-ss">
+        <div class="step-title">SS② 変動シート</div>
+        <div class="step-detail">延長SP, 変更SP<br>キャンセルIB, 延長IB, 変更IB</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-ss">
+        <div class="step-title">SS② 元予約メール</div>
+        <div class="step-detail">スペマメール（IDマッチ）<br>インスタメール（日付マッチ）</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-gas">
+        <div class="step-title">予約差額計算()</div>
+        <div class="step-detail">calculationConfigs &times; 5<br>マッチ: ID or 日付<br>金額差をDIFF_COL列に書込<br>処理済FLAG_COLセット</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-ss">
+        <div class="step-title">SS② 変動シート更新</div>
+        <div class="step-detail">差額計算結果を書込<br>処理済フラグをセット</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow 11: SS②用インスタ取込 -->
+  <div class="flow">
+    <div class="flow-title">
+      <span class="block-id id-flow">F11</span>SS②用 インスタベース予約取込
+      <span class="badge badge-trigger">トリガー: 時間ベース</span>
+      <span class="badge badge-error">エラー率 97.6%</span>
+    </div>
+    <div class="flow-steps">
+      <div class="step step-ext">
+        <div class="step-title">Gmail</div>
+        <div class="step-detail">GAS①と同じ検索クエリ</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-gas">
+        <div class="step-title">runAllibV2()</div>
+        <div class="step-detail">GAS①と同一構造<br>書込先のみSS②に変更</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-alert">
+        <div class="step-title">SS② インスタメール</div>
+        <div class="step-detail">エラー率97.6% &mdash; 要緊急対応<br>差額計算のソースデータ</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow 12: SS②用スペマ取込 -->
+  <div class="flow">
+    <div class="flow-title">
+      <span class="block-id id-flow">F12</span>SS②用 スペースマーケット予約取込
+      <span class="badge badge-trigger">トリガー: 時間ベース</span>
+      <span class="badge badge-error">エラー率 43.71%</span>
+    </div>
+    <div class="flow-steps">
+      <div class="step step-ext">
+        <div class="step-title">Gmail</div>
+        <div class="step-detail">GAS①と同じ検索クエリ</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-gas">
+        <div class="step-title">runAllspV2()</div>
+        <div class="step-detail">GAS①と同一構造<br>書込先のみSS②に変更</div>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="step step-ss">
+        <div class="step-title">SS② スペマメール</div>
+        <div class="step-detail">差額計算のソースデータ</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== Trigger Table ==================== -->
+<div class="section-header">
+  <h2>トリガー一覧</h2>
+  <p>全16トリガーの詳細（GAS①: 14個 + GAS②: 2個）+ 未設定2関数</p>
+</div>
+
+<div class="trigger-section" id="TRG">
+  <h3 style="margin-bottom:12px;"><span class="block-id id-trigger">TRG</span>トリガー詳細テーブル</h3>
+  <table class="trigger-table">
+    <thead>
+      <tr>
+        <th>対象GAS</th>
+        <th>関数名</th>
+        <th>イベント</th>
+        <th>オーナー</th>
+        <th>前回実行</th>
+        <th>エラー率</th>
+        <th>状態</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="gas-label gas1-label">GAS①</span></td><td>runAllibV2</td><td>時間ベース</td><td>他のユーザー</td><td>04/10 7:29</td><td class="error-mid">46.55%</td><td>稼働中</td></tr>
+      <tr><td><span class="gas-label gas1-label">GAS①</span></td><td>runAllspV2</td><td>時間ベース</td><td>他のユーザー</td><td>04/10 7:21</td><td class="error-mid">40.06%</td><td>稼働中</td></tr>
+      <tr><td><span class="gas-label gas1-label">GAS①</span></td><td>runAlloutputV2</td><td>時間ベース</td><td>他のユーザー</td><td>04/10 7:26</td><td class="error-low">0.15%</td><td>稼働中</td></tr>
+      <tr><td><span class="gas-label gas1-label">GAS①</span></td><td>runAllChecksV2</td><td>時間ベース</td><td>他のユーザー</td><td>04/10 7:11</td><td class="error-high">100%</td><td>要調査</td></tr>
+      <tr><td><span class="gas-label gas1-label">GAS①</span></td><td>スペースリストから合計タブ更新</td><td>12時間おき</td><td>自分</td><td>04/10 0:26</td><td class="error-low">0%</td><td>正常</td></tr>
+      <tr><td><span class="gas-label gas1-label">GAS①</span></td><td>main2026カシカシ改</td><td>時間ベース</td><td>自分</td><td>04/04 9:28</td><td class="error-low">0%</td><td>正常</td></tr>
+      <tr><td><span class="gas-label gas1-label">GAS①</span></td><td>main2026カシカシ改</td><td>時間ベース</td><td>自分</td><td>-</td><td>-</td><td>未実行</td></tr>
+      <tr><td><span class="gas-label gas1-label">GAS①</span></td><td>各スペース売上集計２</td><td>時間ベース</td><td>自分</td><td>04/10 7:14</td><td class="error-low">0.6%</td><td>正常</td></tr>
+      <tr><td><span class="gas-label gas1-label">GAS①</span></td><td>各スペース売上集計３</td><td>時間ベース</td><td>自分</td><td>04/10 7:05</td><td class="error-low">0.6%</td><td>正常</td></tr>
+      <tr><td><span class="gas-label gas1-label">GAS①</span></td><td>各スペース売上集計４</td><td>時間ベース</td><td>自分</td><td>04/10 7:23</td><td class="error-low">0.9%</td><td>正常</td></tr>
+      <tr><td><span class="gas-label gas1-label">GAS①</span></td><td>各スペース売上集計５</td><td>時間ベース</td><td>自分</td><td>04/10 7:29</td><td class="error-low">1.2%</td><td>正常</td></tr>
+      <tr><td><span class="gas-label gas1-label">GAS①</span></td><td>全スペース売上転記３</td><td>時間ベース</td><td>自分</td><td>04/10 7:28</td><td class="error-low">1.2%</td><td>正常</td></tr>
+      <tr><td><span class="gas-label gas1-label">GAS①</span></td><td>全スペース売上転記４</td><td>時間ベース</td><td>自分</td><td>04/10 7:00</td><td class="error-low">0.6%</td><td>正常</td></tr>
+      <tr><td><span class="gas-label gas1-label">GAS①</span></td><td>全スペース売上転記５</td><td>時間ベース</td><td>自分</td><td>04/10 7:25</td><td class="error-mid">2.38%</td><td>正常</td></tr>
+      <tr style="border-top:2px solid #475569;"><td><span class="gas-label gas2-label">GAS②</span></td><td>runAllibV2</td><td>時間ベース</td><td>他のユーザー</td><td>04/10 7:25</td><td class="error-high">97.6%</td><td>要緊急対応</td></tr>
+      <tr><td><span class="gas-label gas2-label">GAS②</span></td><td>runAllspV2</td><td>時間ベース</td><td>他のユーザー</td><td>04/10 7:32</td><td class="error-mid">43.71%</td><td>要調査</td></tr>
+      <tr style="background:#1a1a2e;"><td><span class="gas-label gas2-label">GAS②</span></td><td>予約変更V3</td><td class="no-trigger">トリガー未設定</td><td>-</td><td>-</td><td>-</td><td class="no-trigger">手動実行のみ</td></tr>
+      <tr style="background:#1a1a2e;"><td><span class="gas-label gas2-label">GAS②</span></td><td>予約差額計算</td><td class="no-trigger">トリガー未設定</td><td>-</td><td>-</td><td>-</td><td class="no-trigger">手動実行のみ</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ==================== SS Relationship ==================== -->
+<div class="section-header">
+  <h2>スプレッドシート間の関係</h2>
+</div>
+
+<div class="ss-diagram" id="SS">
+  <h2 style="margin-bottom:16px;"><span class="block-id id-ss">SS</span>スプレッドシート間の関係</h2>
+  <div class="ss-grid">
+    <div class="ss-box">
+      <h3><span class="dot" style="background:#22c55e;"></span> SS① 井上様売上管理表2026v2</h3>
+      <ul>
+        <li>インスタメール（IB予約の生データ）</li>
+        <li>スペマメール（SP予約の生データ）</li>
+        <li>ダミーリスト（出力スキップ対象）</li>
+        <li class="highlight">スペースリスト（マスタ: スペース名&harr;コード）</li>
+        <li>各スペース個別シート（日付&times;金額カレンダー）</li>
+        <li class="highlight">2026合計（年間集計）</li>
+        <li>2025合計（前年データ）</li>
+        <li>エラー通知用</li>
+      </ul>
+    </div>
+    <div class="ss-connector">
+      <div class="arrow-lr">&harr;</div>
+      <div class="label">同じGmail<br>ソースから<br>両SSに取込<br><br>GAS②の差額<br>計算がSS②の<br>元予約メール<br>を参照</div>
+    </div>
+    <div class="ss-box">
+      <h3><span class="dot" style="background:#f59e0b;"></span> SS② 予約変更2026</h3>
+      <ul>
+        <li>インスタメール（IB予約 ※SS②用コピー）</li>
+        <li>スペマメール（SP予約 ※SS②用コピー）</li>
+        <li>スペースリスト（マスタ ※SS②用）</li>
+        <li class="highlight">キャンセルSP / 延長SP / 変更SP</li>
+        <li class="highlight">キャンセルIB / 延長IB / 変更IB</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== Issues ==================== -->
+<div class="section-header">
+  <h2>検出された課題・改善ポイント</h2>
+</div>
+
+<div class="issues" id="ISS">
+  <h2><span class="block-id id-issue">ISS</span>要対応事項</h2>
+
+  <div class="issue-item" id="ISS1">
+    <div class="issue-title"><span class="block-id id-issue">ISS1</span>GAS② runAllibV2 エラー率 97.6%（緊急）</div>
+    <div class="issue-desc">SS②用のインスタベース取込がほぼ全て失敗。差額計算のソースデータが不完全になるため、キャンセル・延長・変更の金額計算に影響。原因調査が最優先。</div>
+  </div>
+
+  <div class="issue-item" id="ISS2">
+    <div class="issue-title"><span class="block-id id-issue">ISS2</span>GAS① runAllChecksV2 エラー率 100%</div>
+    <div class="issue-desc">データ整合性チェックが完全に機能停止。エラー検知ができていないため、異常データが見逃されている可能性あり。</div>
+  </div>
+
+  <div class="issue-item" id="ISS3">
+    <div class="issue-title"><span class="block-id id-issue">ISS3</span>GAS① runAllibV2 / runAllspV2 エラー率 40~46%</div>
+    <div class="issue-desc">メール取込の半分近くが失敗。予約データの取りこぼしが発生している可能性。</div>
+  </div>
+
+  <div class="issue-item" id="ISS4">
+    <div class="issue-title"><span class="block-id id-issue">ISS4</span>GAS② 予約変更V3 / 予約差額計算にトリガー未設定</div>
+    <div class="issue-desc">変動メール（キャンセル・延長・変更）の取込と差額計算が手動実行のみ。自動化されていないため、処理漏れのリスクあり。</div>
+  </div>
+
+  <div class="issue-item" id="ISS5">
+    <div class="issue-title"><span class="block-id id-issue">ISS5</span>GAS①のRhinoランタイム</div>
+    <div class="issue-desc">非推奨警告が出ている。V8への移行が必要。ただしコード内でconst/letが使われている箇所があり、移行自体は比較的スムーズな見込み。</div>
+  </div>
+
+  <div class="issue-item" id="ISS6">
+    <div class="issue-title"><span class="block-id id-issue">ISS6</span>コード重複（GAS①とGAS②）</div>
+    <div class="issue-desc">インスタ基本コード・スペマ基本コードが両プロジェクトに存在（書込先SSが異なるだけ）。ライブラリ化で共通化の余地あり。</div>
+  </div>
+
+  <div class="issue-item" id="ISS7">
+    <div class="issue-title"><span class="block-id id-issue">ISS7</span>月別集計/売上転記ファイルの統合</div>
+    <div class="issue-desc">各スペース売上集計(1~12月)×12 + 全スペース売上転記(5~12月)×8 = 20ファイルが同一ロジック。月を引数にする1関数に統合可能。</div>
+  </div>
+
+  <div class="issue-item" id="ISS8">
+    <div class="issue-title"><span class="block-id id-issue">ISS8</span>main2026カシカシ改 のトリガー重複</div>
+    <div class="issue-desc">同じ関数に2つのトリガーが設定されており、うち1つは実行履歴なし。不要なトリガーの削除を検討。</div>
+  </div>
+</div>
+
+<p class="timestamp">Generated: 2026-04-10 | Source: gas-director-fukugyo skill + Apps Script Trigger Pages</p>
+
+</body>
+</html>
